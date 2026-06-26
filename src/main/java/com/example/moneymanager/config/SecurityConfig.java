@@ -3,6 +3,7 @@ package com.example.moneymanager.config;
 import com.example.moneymanager.security.JwtRequestFilter;
 
 import com.example.moneymanager.service.AppUserDetailsService;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -37,6 +38,20 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth.requestMatchers(
                         "/status", "/health", "/register", "/activate", "/login").permitAll()
                         .anyRequest().authenticated())
+
+
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint((request, response, authException) -> {
+                            System.out.println("AuthenticationEntryPoint called");
+                            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+                        })
+                        .accessDeniedHandler((request, response, accessDeniedException) -> {
+                            System.out.println("AccessDeniedHandler called");
+                            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+                        })
+                )
+
+
                 .sessionManagement(session -> session.sessionCreationPolicy(
                         SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
