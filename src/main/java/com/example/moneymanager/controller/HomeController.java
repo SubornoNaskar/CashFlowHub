@@ -10,6 +10,6 @@ public class HomeController {
 
     @GetMapping
     public String healthCheck() {
-        return "Application is running version 26 june..";
+        return "Application is running fine..";
     }
 }
