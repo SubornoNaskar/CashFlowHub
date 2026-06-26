@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 public class EmailService {
     private final JavaMailSender mailSender;
 
-    @Value("${spring.mail.properties.mail.smtp.from}")
+    @Value("${BREVO_FROM_EMAIL}")
     private String fromEmail;
     public void sendEmail(String to, String subject, String body) {
         try {
@@ -23,7 +23,10 @@ public class EmailService {
             message.setText(body);
             mailSender.send(message);
         }catch (Exception e) {
+            e.printStackTrace();
             throw new RuntimeException(e.getMessage());
         }
     }
+
+
 }
