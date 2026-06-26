@@ -21,7 +21,9 @@ public class EmailService {
             message.setTo(to);
             message.setSubject(subject);
             message.setText(body);
+            System.out.println("before sending..");
             mailSender.send(message);
+            System.out.println("after sending..");
         }catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException(e.getMessage());
